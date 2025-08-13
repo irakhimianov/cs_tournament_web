@@ -17,7 +17,4 @@ python manage.py loaddata auth.json
 echo "Collect static"
 python manage.py collectstatic --noinput
 
-echo "Start Gunicorn"
-exec gunicorn project.wsgi:application --bind 0.0.0.0:8000 --workers 3
-
 exec "$@"
