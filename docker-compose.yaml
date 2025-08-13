@@ -1,10 +1,9 @@
 version: "3"
 
 services:
-  web:
+  cs_web:
     build: .
     container_name: "cs_web"
-    env_file: .env
     restart: "always"
     expose:
       - "8000"
@@ -15,11 +14,10 @@ services:
       - redis
       - db
 
-  db:
+  cs_db:
     image: "postgres:14"
     container_name: "cs_db"
     restart: "unless-stopped"
-    env_file: .env
     environment:
       POSTGRES_DB: ${SQL_DATABASE}
       POSTGRES_USER: ${SQL_USER}
@@ -29,19 +27,16 @@ services:
     expose:
       - ${SQL_PORT}
 
-  redis:
+  cs_redis:
     image: "redis:8.0.2-alpine"
     container_name: "cs_redis"
     restart: "always"
     expose:
       - ${REDIS_PORT}
 
-  caddy:
+  cs_caddy:
     image: "caddy:2.7-alpine"
     container_name: "cs_caddy"
-    env_file: .env
-    environment:
-      - "MY_DOMAIN=${MY_DOMAIN}"
     restart: unless-stopped
     ports:
       - "80:80"
