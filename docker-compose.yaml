@@ -1,0 +1,53 @@
+version: "3"
+
+services:
+  web:
+    build:
+      context: .
+      target: prod
+    container_name: "web"
+    restart: "always"
+    expose:
+      - "8000"
+    volumes:
+      - ./static:/opt/app/static
+      - ./media:/opt/app/media
+    depends_on:
+      - db
+
+  caddy:
+    image: caddy:2
+    container_name: caddy
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      - static_data:/srv/static:ro
+      - media_data:/srv/media:ro
+    restart: unless-stopped
+
+  db:
+    image: "postgres:14"
+    container_name: "db"
+    restart: "unless-stopped"
+    environment:
+      POSTGRES_DB: ${SQL_DATABASE}
+      POSTGRES_USER: ${SQL_USER}
+      POSTGRES_PASSWORD: ${SQL_PASSWORD}
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    expose:
+      - ${SQL_PORT}
+
+
+  redis:
+    image: "redis:8.0.2-alpine"
+    container_name: "redis"
+    restart: "always"
+    expose:
+      - ${REDIS_PORT}
