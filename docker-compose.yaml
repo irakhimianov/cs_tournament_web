@@ -2,6 +2,8 @@ version: "3"
 
 services:
   web:
+    build:
+      context: .
     container_name: "web"
     restart: "always"
     expose:
