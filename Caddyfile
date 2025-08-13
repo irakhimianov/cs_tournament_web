@@ -1,23 +1,13 @@
-{
-    email {$EMAIL}
-}
-
 {$ALLOWED_HOSTS} {
-    handle_path /static/* {
+    handle /static/* {
         root * /srv/static
         file_server
     }
-    handle_path /media/* {
+    handle /media/* {
         root * /srv/media
         file_server
     }
 
     reverse_proxy web:8000
 
-    encode gzip zstd
-    header {
-        X-Content-Type-Options nosniff
-        X-Frame-Options DENY
-        Referrer-Policy strict-origin-when-cross-origin
-    }
 }

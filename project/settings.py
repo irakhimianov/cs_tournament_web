@@ -134,7 +134,7 @@ CACHES = {
     },
 }
 
-PROJECT_NAME = os.getenv('PROJECT_NAME', 'Template')
+PROJECT_TITLE = os.getenv('PROJECT_TITLE', 'Template')
 
 PROJECT_URL = os.getenv('PROJECT_URL', 'http://127.0.0.1:8000/')
 
@@ -158,7 +158,7 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': PROJECT_NAME,
+    'TITLE': PROJECT_TITLE,
     'SERVE_INCLUDE_SCHEMA': False,
     'SORT_OPERATION_PARAMETERS': False,
     'COMPONENT_SPLIT_REQUEST': True,
