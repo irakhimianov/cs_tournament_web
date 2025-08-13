@@ -3,7 +3,7 @@ version: "3"
 services:
   web:
     build: .
-    container_name: "web"
+    container_name: "cs_web"
     env_file: .env
     restart: "always"
     expose:
@@ -17,7 +17,7 @@ services:
 
   db:
     image: "postgres:14"
-    container_name: "db"
+    container_name: "cs_db"
     restart: "unless-stopped"
     env_file: .env
     environment:
@@ -31,13 +31,14 @@ services:
 
   redis:
     image: "redis:8.0.2-alpine"
-    container_name: "redis"
+    container_name: "cs_redis"
     restart: "always"
     expose:
       - ${REDIS_PORT}
 
   caddy:
-    image: caddy:2.7-alpine
+    image: "caddy:2.7-alpine"
+    container_name: "cs_caddy"
     env_file: .env
     environment:
       - "MY_DOMAIN=${MY_DOMAIN}"

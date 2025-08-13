@@ -1,4 +1,4 @@
-FROM python:3.13-slim as base
+FROM python:3.13-slim AS base
 
 ARG DEPENDENCIES="vim nano build-essential libpq-dev gcc musl-dev postgresql-client"
 RUN apt-get update && apt-get install -y $DEPENDENCIES
@@ -10,7 +10,10 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 FROM base
 
-RUN chmod +x ./docker-entrypoint.sh && chmod +x ./docker-cmd.sh
+RUN chmod +x docker-entrypoint.sh && chmod +x docker-cmd.sh
+
+VOLUME /media/
+VOLUME /static/
 
 EXPOSE 8000
 

@@ -15,6 +15,8 @@ echo "Apply fixtures"
 python manage.py loaddata auth.json
 
 echo "Collect static"
+mkdir media
+mkdir static
 python manage.py collectstatic --noinput
 
 exec "$@"
