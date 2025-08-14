@@ -55,8 +55,8 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
-      - ./static:/srv/static:ro
-      - ./media:/srv/media:ro
+      - static:/srv/static:ro
+      - media:/srv/media:ro
     depends_on:
       - web
 
