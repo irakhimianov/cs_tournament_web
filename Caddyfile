@@ -1,13 +1,19 @@
 {$ALLOWED_HOSTS} {
+
     handle /static/* {
-        root * /srv/static
+        root * /srv
         file_server
     }
+
     handle /media/* {
-        root * /srv/media
+        root * /srv
         file_server
     }
 
-    reverse_proxy web:8000
-
+	reverse_proxy web:8000 {
+		header_up X-Real-IP {remote}
+		header_up X-Forwarded-For {remote}
+		header_up X-Forwarded-Proto {scheme}
+		header_up Host {host}
+	}
 }

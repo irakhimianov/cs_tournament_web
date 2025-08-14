@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -71,12 +72,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('SQL_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.getenv('SQL_DATABASE', BASE_DIR / 'db.sqlite3'),
-        'USER': os.getenv('SQL_USER', 'user'),
-        'PASSWORD': os.getenv('SQL_PASSWORD', 'password'),
-        'HOST': os.getenv('SQL_HOST', 'localhost'),
-        'PORT': int(os.getenv('SQL_PORT', 5432)),
+        'ENGINE': os.getenv('POSTGRES_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.getenv('POSTGRES_DATABASE', BASE_DIR / 'db.sqlite3'),
+        'USER': os.getenv('POSTGRES_USER', 'user'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'password'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'PORT': int(os.getenv('POSTGRES_PORT', 5432)),
     },
 }
 

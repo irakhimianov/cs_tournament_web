@@ -1,11 +1,15 @@
 FROM python:3.13-slim
 
 ARG DEPENDENCIES="vim nano build-essential libpq-dev gcc musl-dev postgresql-client"
-RUN apt-get update && apt-get install -y $DEPENDENCIES
+RUN apt update && apt install -y $DEPENDENCIES
 
 WORKDIR /opt/app
 
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
 COPY . .
+
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 VOLUME /media/
