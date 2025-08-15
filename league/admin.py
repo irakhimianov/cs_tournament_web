@@ -5,7 +5,7 @@ from django.http import HttpRequest
 from django.db.models import QuerySet
 from django.utils import timezone
 
-from league import models
+from league import models, services
 
 
 class TeamPlayerInline(admin.TabularInline):
@@ -40,6 +40,8 @@ class Player(admin.ModelAdmin):
     @admin.action(description='Отметить, что игроки прошли проверку')
     def verify(self, request: HttpRequest, qs: QuerySet[models.Player]) -> None:
         qs.update(verified_at=timezone.now())
+        for player in qs:
+            services.notify_player_verification(instance=player)
 
 
 @admin.register(models.Team)

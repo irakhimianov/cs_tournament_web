@@ -1,7 +1,7 @@
 from typing import Type
 
-from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models.signals import post_save, pre_save
 
 from league import models, services
 
@@ -26,3 +26,13 @@ def set_team_creator(sender: Type[models.Team], instance: models.Team, created: 
     """После создания команды добавляем её создателя в `TeamPlayer`"""
     if created and instance.created_by:
         models.TeamPlayer.objects.get_or_create(team=instance, player=instance.created_by)
+
+
+@receiver(pre_save, sender=models.Player)
+def notify_player_verification(sender: Type[models.Player], instance: models.Player, **kwargs) -> None:
+    """Уведомляем игрока после проверки"""
+    if not instance.pk:
+        return
+
+    old_instance = sender.objects.filter(pk=instance.pk).first()
+    services.notify_player_verification(instance=instance, old_instance=old_instance)

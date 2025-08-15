@@ -123,7 +123,7 @@ REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
 
 REDIS_PORT = int(os.getenv('REDIS_PORT', 6379))
 
-REDIS_DB = int(os.getenv('REDIS_DB', 1))
+REDIS_DB = int(os.getenv('REDIS_WEB_DB', 1))
 
 CACHE_TIMEOUT = int(os.getenv('CACHE_TIMEOUT', 10))
 
@@ -169,6 +169,8 @@ SPECTACULAR_SETTINGS = {
 CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
 
 CELERY_TIMEZONE = TIME_ZONE
+
+BOT_TOKEN = os.getenv('BOT_TOKEN', '')
 
 try:
     from project.local_settings import *
