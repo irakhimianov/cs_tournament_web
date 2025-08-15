@@ -15,6 +15,21 @@ services:
       - redis
       - db
 
+  celery:
+    build: .
+    container_name: "celery"
+    command: celery -A proj worker -l info
+    env_file:
+      - .env
+    restart: "always"
+    volumes:
+      - ./project/local_settings.py:/opt/app/project/local_settings.py:ro
+      - ./media:/opt/app/media
+    depends_on:
+      - redis
+      - db
+      - web
+
   db:
     image: "postgres:14"
     container_name: "db"
@@ -29,18 +44,18 @@ services:
     container_name: "redis"
     restart: "always"
 
-#  nginx:
-#    build:
-#      dockerfile: ./Dockerfile
-#      context: ./nginx/
-#    container_name: "nginx"
-#    ports:
-#      - "80:80"
-#    volumes:
-#      - ./static:/opt/app/static
-#      - ./media:/opt/app/media
-#    depends_on:
-#      - web
+  #  nginx:
+  #    build:
+  #      dockerfile: ./Dockerfile
+  #      context: ./nginx/
+  #    container_name: "nginx"
+  #    ports:
+  #      - "80:80"
+  #    volumes:
+  #      - ./static:/opt/app/static
+  #      - ./media:/opt/app/media
+  #    depends_on:
+  #      - web
 
   caddy:
     image: "caddy:2-alpine"
@@ -55,8 +70,8 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
-      - ./static:/srv/static:ro
-      - ./media:/srv/media:ro
+      - ./static:/www/html/static:ro
+      - ./media:/www/html/media:ro
     depends_on:
       - web
 

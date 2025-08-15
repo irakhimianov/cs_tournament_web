@@ -1,12 +1,12 @@
 {$ALLOWED_HOSTS} {
 
     handle_path /static/* {
-        root * /srv/static
+        root * /www/html/static
         file_server
     }
 
     handle_path /media/* {
-        root * /srv/media
+        root * /www/html/media
         file_server
     }
 
