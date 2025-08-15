@@ -85,6 +85,7 @@ class PlayerCreate(serializers.ModelSerializer):
             'faceit_url',
             'faceit_level',
             'agreed_at',
+            'questioned_at',
             'verified_at',
         )
 
@@ -101,6 +102,7 @@ class PlayerEdit(serializers.ModelSerializer):
             'faceit_url',
             'faceit_level',
             'agreed_at',
+            'questioned_at',
             'verified_at',
         )
 
