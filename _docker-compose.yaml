@@ -22,7 +22,7 @@ services:
       context: ./web
       dockerfile: Dockerfile
     container_name: "celery"
-    command: celery -A proj worker -l info
+    command: celery -A project worker -l info
     env_file:
       - .env
     restart: "unless-stopped"
