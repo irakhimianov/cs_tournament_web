@@ -1,0 +1,86 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: "web"
+    env_file:
+      - .env
+    restart: "unless-stopped"
+    volumes:
+      - ./web/project/local_settings.py:/opt/app/web/project/local_settings.py:ro
+      - ./web/static:/opt/app/web/static
+      - ./web/media:/opt/app/web/media
+    depends_on:
+      - redis
+      - db
+
+  celery:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: "celery"
+    command: celery -A proj worker -l info
+    env_file:
+      - .env
+    restart: "unless-stopped"
+    volumes:
+      - ./web/project/local_settings.py:/opt/app/web/project/local_settings.py:ro
+      - ./web/media:/opt/app/web/media
+    depends_on:
+      - redis
+      - db
+      - web
+
+  db:
+    image: "postgres:14"
+    container_name: "db"
+    env_file:
+      - .env
+    restart: "unless-stopped"
+    volumes:
+      - ./web/pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: "redis:8.0.2-alpine"
+    container_name: "redis"
+    restart: "unless-stopped"
+
+  caddy:
+    image: "caddy:2-alpine"
+    container_name: "caddy"
+    env_file:
+      - .env
+    restart: "unless-stopped"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./web/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./web/static:/www/html/static:ro
+      - ./web/media:/www/html/media:ro
+    depends_on:
+      - web
+
+  bot:
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+    container_name: "bot"
+    restart: "unless-stopped"
+    env_file:
+      - .env
+    depends_on:
+      - web
+      - redis
+
+volumes:
+  pgdata:
+  static:
+  media:
+  caddy_data:
+  caddy_config:

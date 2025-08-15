@@ -8,9 +8,9 @@ services:
       - .env
     restart: "always"
     volumes:
-      - ./project/local_settings.py:/opt/app/project/local_settings.py:ro
-      - ./static:/opt/app/static
-      - ./media:/opt/app/media
+      - ./project/local_settings.py:/opt/app/web/project/local_settings.py:ro
+      - ./static:/opt/app/web/static
+      - ./media:/opt/app/web/media
     depends_on:
       - redis
       - db
@@ -23,8 +23,8 @@ services:
       - .env
     restart: "always"
     volumes:
-      - ./project/local_settings.py:/opt/app/project/local_settings.py:ro
-      - ./media:/opt/app/media
+      - ./project/local_settings.py:/opt/app/web/project/local_settings.py:ro
+      - ./media:/opt/app/web/media
     depends_on:
       - redis
       - db

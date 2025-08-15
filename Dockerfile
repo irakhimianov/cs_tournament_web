@@ -3,7 +3,7 @@ FROM python:3.13-slim
 ARG DEPENDENCIES="vim nano build-essential libpq-dev gcc musl-dev postgresql-client"
 RUN apt update && apt install -y $DEPENDENCIES
 
-WORKDIR /opt/app
+WORKDIR /opt/app/web
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
